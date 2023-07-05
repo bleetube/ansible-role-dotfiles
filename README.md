@@ -25,3 +25,8 @@ None.
 ## Resources
 
 * [GNU Readline Init File Syntax](http://www.gnu.org/software/bash/manual/html_node/Readline-Init-File-Syntax.html)
+
+## Troubleshooting
+
+* current vim runtime path with `:set runtimepath?`
+* Check vim `:version`

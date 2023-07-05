@@ -21,6 +21,13 @@
     - /etc/skel
     - /root
 
+- name: Add root bashrc shell history configuration
+  lineinfile:
+    path: /root/.bashrc
+    regexp: '^(export )?HISTCONTROL='
+    line: 'HISTCONTROL=ignoreboth'
+    state: present
+
 - name: Add root bashrc and vim configuration.
   lineinfile:
     path: /root/.bashrc
@@ -28,25 +35,25 @@
     line: "{{ item.line }}"
     state: present
   with_items:
-    - regexp: '^(export )?EDITOR='
-      line: 'export EDITOR=vim.basic'
     - regexp: '^(export )?VISUAL='
       line: 'export VISUAL=vim.basic'
-    - regexp: '^(export )?HISTCONTROL='
-      line: 'HISTCONTROL=ignoreboth'
-  when: ansible_os_family != 'RedHat'
+    - regexp: '^(export )?EDITOR='
+      line: 'export EDITOR=vim.basic'
+    - regexp: '^(export )?SUDO_EDITOR='
+      line: 'export SUDO_EDITOR=vim.basic'
+  when: ansible_os_family == 'Debian'
 
-- name: Add root bashrc and vim configuration for RedHat 7.9.
+- name: Add root bashrc and vim configuration for RedHat
   lineinfile:
     path: /root/.bashrc
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
     state: present
   with_items:
-    - regexp: '^(export )?EDITOR='
-      line: 'export EDITOR=vim'
     - regexp: '^(export )?VISUAL='
       line: 'export VISUAL=vim'
-    - regexp: '^(export )?HISTCONTROL='
-      line: 'HISTCONTROL=ignoreboth'
+    - regexp: '^(export )?EDITOR='
+      line: 'export EDITOR=vim'
+    - regexp: '^(export )?SUDO_EDITOR='
+      line: 'export SUDO_EDITOR=vim'
   when: ansible_os_family == 'RedHat'
