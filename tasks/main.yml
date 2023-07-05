@@ -57,3 +57,11 @@
     - regexp: '^(export )?SUDO_EDITOR='
       line: 'export SUDO_EDITOR=vim'
   when: ansible_os_family == 'RedHat'
+
+- name: Add functional alias to restart a service and show the log
+  blockinfile:
+    path: /root/.bashrc
+    block: |
+      pheonix() {
+              systemctl restart $1;journalctl -fu $1
+      }
