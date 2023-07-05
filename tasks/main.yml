@@ -1,0 +1,52 @@
+---
+- import_tasks: vim-Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- import_tasks: vim.yml
+  when: ansible_os_family != 'Debian'
+
+- name: Copy bash aliases
+  ansible.builtin.copy:
+    src: bash_aliases
+    dest: "{{ item }}/.bash_aliases"
+  loop:
+    - /etc/skel
+    - /root
+
+- name: Copy shell configuration
+  ansible.builtin.copy:
+    src: inputrc
+    dest: "{{ item }}/.inputrc"
+  loop:
+    - /etc/skel
+    - /root
+
+- name: Add root bashrc and vim configuration.
+  lineinfile:
+    path: /root/.bashrc
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+  with_items:
+    - regexp: '^(export )?EDITOR='
+      line: 'export EDITOR=vim.basic'
+    - regexp: '^(export )?VISUAL='
+      line: 'export VISUAL=vim.basic'
+    - regexp: '^(export )?HISTCONTROL='
+      line: 'HISTCONTROL=ignoreboth'
+  when: ansible_os_family != 'RedHat'
+
+- name: Add root bashrc and vim configuration for RedHat 7.9.
+  lineinfile:
+    path: /root/.bashrc
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+  with_items:
+    - regexp: '^(export )?EDITOR='
+      line: 'export EDITOR=vim'
+    - regexp: '^(export )?VISUAL='
+      line: 'export VISUAL=vim'
+    - regexp: '^(export )?HISTCONTROL='
+      line: 'HISTCONTROL=ignoreboth'
+  when: ansible_os_family == 'RedHat'

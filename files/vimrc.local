@@ -1,0 +1,40 @@
+" -- General Settings
+set mouse-=a        " No mouse, see https://github.com/vim/vim/issues/12621
+set encoding=utf-8  " Necessary to show Unicode glyphs
+set scrolloff=4     " keep at least 4 lines above/below cursor visible
+set linebreak       " last word line wrapping, instead of last character
+set ttyfast         " fast terminal
+set incsearch       " search as we type
+set smartcase       " case (in)sensitive searching
+set nobackup        " declutter backups (handled elsewhere)
+set noswapfile      " declutter temp files (live fast, die hard)
+set number
+
+" -- Syntax Highlighting
+"set background=dark  " tell vim the background is dark
+colorscheme ir_black " via http://toddwerth.com/2008/04/30/the-last-vim-color-scheme-youll-ever-need/
+syntax on            " enable syntax highlighting
+set hlsearch         " highlight/underline search results
+"au BufRead,BufNewFile *.md setfiletype markdown
+"au BufRead,BufNewFile /etc/nginx/*,/usr/local/nginx/conf/* setfiletype nginx
+
+" -- Tabs
+" :h tabstop
+" http://tedlogan.com/techblog3.html
+set tabstop=4        " existing tab column length
+set softtabstop=4    " spaces per <TAB> and <BS>
+set shiftwidth=4     " spaces per indent
+set expandtab        " whether to prefer spaces
+set cindent          " auto-indenting for code blocks
+
+" -- Keys
+" insert mode with semi-colon, because save the pinkies
+noremap ; : 
+noremap , ; 
+" center search results on the screen
+map N Nzz 
+map n nzz 
+
+" Make tabs, trailing whitespace, and non-breaking spaces visible for list
+exec "set listchars=tab:\uBB\uBB,trail:\uB7,nbsp:~"
+

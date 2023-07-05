@@ -1,0 +1,25 @@
+---
+- name: Ensure a path for vim addons exists.
+  ansible.builtin.file:
+    path: /var/lib/vim/addons/colors
+    state: directory
+
+- name: Copy the vim colorscheme
+  ansible.builtin.copy:
+    src: ir_black.vim
+    dest: /var/lib/vim/addons/colors/
+
+- name: Copy the global vim configuration
+  ansible.builtin.copy:
+    src: vimrc.local
+    dest: /etc/
+
+- name: Ensure vim will source a global configuration file
+  ansible.builtin.blockinfile:
+    path: /etc/vimrc
+    marker: '" {mark} ANSIBLE MANAGED BLOCK'
+    block: |
+      set runtimepath+=/var/lib/vim/addons
+      if filereadable("/etc/vimrc.local")
+        source /etc/vimrc.local
+      endif
