@@ -28,5 +28,10 @@ None.
 
 ## Troubleshooting
 
-* current vim runtime path with `:set runtimepath?`
-* Check vim `:version`
+```vim
+:scriptnames
+:set runtimepath?
+:version
+```
+
+Also `vim -V`
