@@ -13,6 +13,13 @@
     - /etc/skel
     - /root
 
+- name: Ensure Arch Linux sources bash_aliases
+  lineinfile:
+    path: /root/.bashrc
+    line: '[ -f ~/.bash_aliases ]  && source ~/.bash_aliases'
+    create: yes
+  when: ansible_os_family == 'Archlinux'
+
 - name: Copy shell configuration
   ansible.builtin.copy:
     src: inputrc

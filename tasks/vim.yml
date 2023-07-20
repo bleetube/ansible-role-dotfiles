@@ -19,7 +19,6 @@
     path: /etc/vimrc
     marker: '" {mark} ANSIBLE MANAGED BLOCK'
     block: |
-      let skip_defaults_vim=1
       set runtimepath+=/var/lib/vim/addons
       if filereadable("/etc/vimrc.local")
         source /etc/vimrc.local

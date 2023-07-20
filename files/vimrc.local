@@ -1,3 +1,5 @@
+let skip_defaults_vim=1
+
 " -- General Settings
 set mouse-=a        " No mouse, see https://github.com/vim/vim/issues/12621
 set encoding=utf-8  " Necessary to show Unicode glyphs
