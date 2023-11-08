@@ -7,7 +7,7 @@ Tested on:
 * Archlinux
 * Debian 10, 11, 12
 * Ubuntu 20.04, 22.04
-* !RedHat 7.9
+* RedHat 7.9
 
 ## Requirements
 

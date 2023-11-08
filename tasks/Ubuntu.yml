@@ -1,0 +1,50 @@
+---
+- import_tasks: vim-Debian.yml
+
+- name: Copy shell configuration
+  ansible.builtin.copy:
+    src: inputrc
+    dest: "{{ item }}/.inputrc"
+  loop:
+    - /etc/skel
+    - /root
+    - "{{ ansible_env.HOME }}/"
+
+- name: Copy bash aliases
+  ansible.builtin.copy:
+    src: bash_aliases
+    dest: "{{ item }}/.bash_aliases"
+  loop:
+    - /etc/skel
+    - /root
+    - "{{ ansible_env.HOME }}/"
+
+- name: Add root bashrc shell history configuration
+  lineinfile:
+    path: /root/.bashrc
+    regexp: '^(export )?HISTCONTROL='
+    line: 'HISTCONTROL=ignoreboth'
+    state: present
+
+- name: Add root bashrc and vim configuration.
+  lineinfile:
+    path: /root/.bashrc
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+  with_items:
+    - regexp: '^(export )?VISUAL='
+      line: 'export VISUAL=vim.basic'
+    - regexp: '^(export )?EDITOR='
+      line: 'export EDITOR=vim.basic'
+    - regexp: '^(export )?SUDO_EDITOR='
+      line: 'export SUDO_EDITOR=vim.basic'
+  when: ansible_os_family == 'Debian'
+
+- name: Add functional alias to restart a service and show the log
+  blockinfile:
+    path: /root/.bashrc
+    block: |
+      pheonix() {
+              systemctl restart $1;journalctl -fu $1
+      }
