@@ -13,13 +13,3 @@
   ansible.builtin.copy:
     src: vimrc.local
     dest: /etc/
-
-- name: Ensure vim will source a global configuration file
-  ansible.builtin.blockinfile:
-    path: /etc/vimrc
-    marker: '" {mark} ANSIBLE MANAGED BLOCK'
-    block: |
-      set runtimepath+=/var/lib/vim/addons
-      if filereadable("/etc/vimrc.local")
-        source /etc/vimrc.local
-      endif

@@ -1,32 +1,22 @@
 ---
 - import_tasks: vim.yml
-  when: ansible_os_family != 'Debian'
-
-#- name: Ensure Arch Linux sources bash_aliases
-#  lineinfile:
-#    path: /root/.bashrc
-#  # regexp: '\.bash_aliases'
-#    line: '[ -f ~/.bash_aliases ] && source ~/.bash_aliases'
-#    create: yes
-#  when: ansible_os_family == 'Archlinux'
 
 - name: Copy shell configuration
   ansible.builtin.copy:
     src: inputrc
-    dest: "{{ item }}/.inputrc"
+    dest: "{{ dotfile_path }}/.inputrc"
+  loop_control:
+    loop_var: dotfile_path
   loop:
     - /etc/skel
     - /root
-    - "{{ ansible_env.HOME }}/"
+    - "{{ ansible_env.PWD }}/"
 
-#- name: Copy bash aliases
-#  ansible.builtin.copy:
-#    src: bash_aliases
-#    dest: "{{ item }}/.bash_aliases"
-#  loop:
-#    - /etc/skel
-#    - /root
-#    - "{{ ansible_env.HOME }}/"
+- name: Install global bash aliases
+  ansible.builtin.copy:
+    src: bash_aliases
+    dest: /etc/profile.d/zz_aliases.sh 
+    mode: '0755'
 
 #- name: Add root bashrc shell history configuration
 #  lineinfile:

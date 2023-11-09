@@ -1,24 +1,5 @@
 ---
-- import_tasks: vim-Debian.yml
-  when: ansible_os_family == 'Debian'
-
 - import_tasks: vim.yml
-  when: ansible_os_family != 'Debian'
-
-- name: Ensure Arch Linux sources bash_aliases
-  lineinfile:
-    path: /root/.bashrc
-  # regexp: '\.bash_aliases'
-    line: '[ -f ~/.bash_aliases ] && source ~/.bash_aliases'
-    create: yes
-  when: ansible_os_family == 'Archlinux'
-
-- name: Ensure Debian sources .bash_aliases
-  ansible.builtin.lineinfile:
-    path: /root/.bashrc
-  # regexp: '\.bash_aliases'
-    line: 'source ~/.bash_aliases'
-  when: ansible_distribution == 'Debian' # Not Ubuntu, which should already have this
 
 - name: Copy shell configuration
   ansible.builtin.copy:
@@ -45,21 +26,6 @@
     line: 'HISTCONTROL=ignoreboth'
     state: present
 
-- name: Add root bashrc and vim configuration.
-  lineinfile:
-    path: /root/.bashrc
-    regexp: "{{ item.regexp }}"
-    line: "{{ item.line }}"
-    state: present
-  with_items:
-    - regexp: '^(export )?VISUAL='
-      line: 'export VISUAL=vim.basic'
-    - regexp: '^(export )?EDITOR='
-      line: 'export EDITOR=vim.basic'
-    - regexp: '^(export )?SUDO_EDITOR='
-      line: 'export SUDO_EDITOR=vim.basic'
-  when: ansible_os_family == 'Debian'
-
 - name: Add root bashrc and vim configuration for RedHat
   lineinfile:
     path: /root/.bashrc
@@ -73,7 +39,6 @@
       line: 'export EDITOR=vim'
     - regexp: '^(export )?SUDO_EDITOR='
       line: 'export SUDO_EDITOR=vim'
-  when: ansible_os_family != 'Debian'
 
 - name: Add functional alias to restart a service and show the log
   blockinfile:

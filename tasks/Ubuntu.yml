@@ -1,6 +1,16 @@
 ---
 - import_tasks: vim-Debian.yml
 
+- name: Ensure vim will source a global configuration file
+  ansible.builtin.blockinfile:
+    path: /etc/vimrc
+    marker: '" {mark} ANSIBLE MANAGED BLOCK'
+    block: |
+      set runtimepath+=/var/lib/vim/addons
+      if filereadable("/etc/vimrc.local")
+        source /etc/vimrc.local
+      endif
+
 - name: Copy shell configuration
   ansible.builtin.copy:
     src: inputrc
