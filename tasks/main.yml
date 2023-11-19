@@ -4,9 +4,15 @@
     msg: "{{ ansible_distribution }}-{{ ansible_facts.distribution_major_version }}.yml"
 
 - name: Run tasks based on the OS type, or a default if not found.
-  include_tasks: "{{ item }}"
+  include_tasks:
+    file: "{{ task_target }}"
+    apply:
+      become: yes
+  loop_control:
+    loop_var: task_target
   with_first_found:
     - "{{ ansible_distribution }}-{{ ansible_facts.distribution_major_version }}.yml"
     - "{{ ansible_distribution }}.yml"
     - "{{ ansible_os_family }}.yml"
     - "default.yml"
+  

@@ -1,6 +1,11 @@
 ---
 - import_tasks: vim.yml
 
+- name: Copy the global vim configuration
+  ansible.builtin.copy:
+    src: vimrc.local
+    dest: /etc/
+
 - name: Copy shell configuration
   ansible.builtin.copy:
     src: inputrc
@@ -8,7 +13,7 @@
   loop:
     - /etc/skel
     - /root
-    - "{{ ansible_env.HOME }}/"
+    - "{{ ansible_env.PWD }}/"
 
 - name: Copy bash aliases
   ansible.builtin.copy:

@@ -1,9 +1,14 @@
 ---
 - import_tasks: vim.yml
 
+- name: Copy the global vim configuration
+  ansible.builtin.copy:
+    src: vimrc.local
+    dest: /etc/vim/
+
 - name: Ensure vim will source a global configuration file
   ansible.builtin.blockinfile:
-    path: /etc/vimrc
+    path: /etc/vim/vimrc
     marker: '" {mark} ANSIBLE MANAGED BLOCK'
     block: |
       set runtimepath+=/var/lib/vim/addons
@@ -24,7 +29,7 @@
   loop:
     - /etc/skel
     - /root
-    - "{{ ansible_env.HOME }}/"
+    - "{{ ansible_env.PWD }}/"
 
 - name: Copy bash aliases
   ansible.builtin.copy:

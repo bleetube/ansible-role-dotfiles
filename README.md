@@ -17,7 +17,6 @@ None.
 
 ```yaml
 - hosts: all
-  become: true
   roles:
     - bleetube.dotfiles
 ```

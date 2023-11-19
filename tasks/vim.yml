@@ -8,8 +8,3 @@
   ansible.builtin.copy:
     src: ir_black.vim
     dest: /var/lib/vim/addons/colors/
-
-- name: Copy the global vim configuration
-  ansible.builtin.copy:
-    src: vimrc.local
-    dest: /etc/
